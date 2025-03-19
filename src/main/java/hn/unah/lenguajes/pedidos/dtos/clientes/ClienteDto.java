@@ -1,5 +1,7 @@
 package hn.unah.lenguajes.pedidos.dtos.clientes;
 
+import java.util.List;
+
 public class ClienteDto {    
     
     private int idCliente;
@@ -12,14 +14,19 @@ public class ClienteDto {
 
     private String telefono;
 
+    private DireccionDto direccion;
+
+    private List<PedidosDto> pedidos;
+
     public ClienteDto() {
     }
 
-    public ClienteDto(String nombre, String apellido, String correo, String telefono) {        
+    public ClienteDto(String nombre, String apellido, String correo, String telefono, DireccionDto direccionDto) {        
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.telefono = telefono;
+        this.direccion = direccionDto;
     }
 
     public String getNombre() {
@@ -61,6 +68,24 @@ public class ClienteDto {
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
+
+    public DireccionDto getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(DireccionDto direccion) {
+        this.direccion = direccion;
+    }
+
+    public List<PedidosDto> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<PedidosDto> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    
 
     
 
