@@ -4,6 +4,7 @@ import hn.unah.lenguajes.pedidos.PedidosApplication;
 import hn.unah.lenguajes.pedidos.controllers.ClienteController;
 import hn.unah.lenguajes.pedidos.dtos.clientes.ClienteDto;
 import hn.unah.lenguajes.pedidos.dtos.clientes.DireccionDto;
+import hn.unah.lenguajes.pedidos.dtos.clientes.PedidosDto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import hn.unah.lenguajes.pedidos.entities.Cliente;
 import hn.unah.lenguajes.pedidos.entities.Direccion;
+import hn.unah.lenguajes.pedidos.entities.Pedidos;
 import hn.unah.lenguajes.pedidos.repositories.ClienteRepository;
 import hn.unah.lenguajes.pedidos.repositories.DireccionRepository;
+import hn.unah.lenguajes.pedidos.repositories.PedidoRepository;
 
 @Service
 public class ClienteService {
@@ -25,7 +28,10 @@ public class ClienteService {
 
     @Autowired
     private DireccionRepository direccionRepository;
- 
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
 
     public ClienteDto crearNuevoCliente(ClienteDto clienteDto){
         Cliente nvoCliente = new Cliente();
@@ -36,11 +42,25 @@ public class ClienteService {
 
         Cliente save = clienteRepository.save(nvoCliente);
 
-        Direccion direccion = new Direccion();
-        direccion.setCiudad(clienteDto.getDireccion().getCiudad());
-        direccion.setCalle(clienteDto.getDireccion().getCalle());
-        direccion.setCliente(nvoCliente);
-        direccionRepository.save(direccion);
+        if(clienteDto.getDireccion() !=null){
+            Direccion direccion = new Direccion();
+            direccion.setCiudad(clienteDto.getDireccion().getCiudad());
+            direccion.setCalle(clienteDto.getDireccion().getCalle());
+            direccion.setCliente(nvoCliente);
+            direccionRepository.save(direccion);
+        }     
+        
+        if(clienteDto.getPedidos() !=null){
+            for (PedidosDto pedido : clienteDto.getPedidos()) {
+                Pedidos nvoPedido = new Pedidos();
+                nvoPedido.setEstado(pedido.getEstado());
+                nvoPedido.setFechaPedido(pedido.getFechaPedido());
+                nvoPedido.setFechaEnvio(pedido.getFechaEnvio());
+                nvoPedido.setTotalPedido(pedido.getTotalPedido());
+                nvoPedido.setCliente(save);
+                this.pedidoRepository.save(nvoPedido);
+            }
+        }
 
         clienteDto.setIdCliente(save.getIdCliente());
         

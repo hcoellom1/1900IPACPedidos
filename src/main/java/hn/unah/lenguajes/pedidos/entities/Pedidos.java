@@ -22,11 +22,13 @@ public class Pedidos {
 
     private String estado;
 
+    @Column(name="fechapedido")
     private LocalDate fechaPedido;
 
+    @Column(name="fechaenvio")
     private LocalDate fechaEnvio;
 
-    @Column(name="totalPedido")
+    @Column(name="totalpedido")
     private double totalPedido;
 
     @ManyToOne
